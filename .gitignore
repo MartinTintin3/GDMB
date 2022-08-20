@@ -106,3 +106,5 @@ dist
 # Annoying Mac
 .DS_Store
 **/.DS_Store
+
+out
