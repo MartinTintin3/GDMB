@@ -7,7 +7,6 @@ import * as path from "path";
 import { Sequelize } from "sequelize";
 
 import Command from "./interfaces/command";
-
 import { init as CaseInit } from "./db/models/Case.js";
 import { init as WarningInit } from "./db/models/Warning.js";
 

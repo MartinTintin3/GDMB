@@ -1,4 +1,5 @@
 import { CacheType, ChatInputCommandInteraction } from "discord.js";
+
 import Command from "../interfaces/command";
 
 export default {

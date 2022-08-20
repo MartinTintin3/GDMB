@@ -1,5 +1,6 @@
 import { DataType, Sequelize } from "sequelize-typescript";
 import { DataTypes } from "sequelize/types";
+
 import config from "../config.json" assert { type: "json" };
 
 const sequelize = new Sequelize("database", "user", config.databasePassword, {

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CacheType, ChatInputCommandInteraction, Collection } from "discord.js";
+
 import { CommandOption } from "../option";
 
 interface Command {

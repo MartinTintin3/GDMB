@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+
 import { Case } from "./Case";
 
 export class Warning extends Model {
