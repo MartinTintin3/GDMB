@@ -1,0 +1,39 @@
+{
+	"name": "gdmb",
+	"version": "1.0.0",
+	"description": "",
+	"main": "out/src/index.js",
+	"scripts": {
+		"build": "npx tsc",
+		"deploy": "node out/src/deploy.js",
+		"start": "node ."
+	},
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/martinGITHUBER/GDMB.git"
+	},
+	"keywords": [],
+	"author": "Martin M.",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/martinGITHUBER/GDMB/issues"
+	},
+	"homepage": "https://github.com/martinGITHUBER/GDMB#readme",
+	"dependencies": {
+		"@discordjs/rest": "^1.0.1",
+		"discord.js": "^14.2.0",
+		"dotenv": "^16.0.1",
+		"sequelize": "^6.21.4",
+		"sequelize-typescript": "^2.1.3",
+		"sqlite3": "^5.0.11"
+	},
+	"devDependencies": {
+		"@types/node": "^18.7.6",
+		"@types/validator": "^13.7.5",
+		"@typescript-eslint/eslint-plugin": "^5.33.1",
+		"@typescript-eslint/parser": "^5.33.1",
+		"eslint": "^8.22.0",
+		"typescript": "^4.7.4"
+	}
+}

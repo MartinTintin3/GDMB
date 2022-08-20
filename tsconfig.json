@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"outDir": "./out/",
+		"noImplicitAny": true,
+		"resolveJsonModule": true,
+		"module": "esnext",
+		"target": "esnext",
+		"jsx": "react",
+		"allowJs": true,
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
+	}
+}
