@@ -1,13 +1,13 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+/*import { DataTypes, Model, Sequelize } from "sequelize";
+import { ITempMute } from "../../interfaces/actions";
 
 import { Case } from "./Case";
 
-export class Warning extends Model {
+export class TempMute extends Model implements ITempMute {
 	declare public id: number;
 	declare public offender: string;
 	declare public reason: string | null;
 	declare public moderator: string;
-
 	declare public timestamp: Date;
 }
 
@@ -32,4 +32,6 @@ export const init = (sequelize: Sequelize, Cases: typeof Case) => {
 
 	Cases.hasOne(Warnings);
 	Warnings.belongsTo(Cases);
-};
+
+	return Warnings;
+};*/

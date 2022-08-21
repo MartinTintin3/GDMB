@@ -1,14 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { CacheType, ChatInputCommandInteraction, Collection } from "discord.js";
+import { CommandExternalData } from "..";
 
 import { CommandOption } from "../option";
 
-interface Command {
+interface ICommand {
 	name: string;
 	description: string;
+	defaultPermissions?: string | number | bigint;
 	options: CommandOption[];
 
-	execute: (interaction: ChatInputCommandInteraction<CacheType>, commands: Collection<string, Command>) => Promise<any>;
+	execute: (data: CommandExternalData) => Promise<any>;
 }
 
-export default Command;
+export default ICommand;

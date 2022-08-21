@@ -6,7 +6,8 @@
 	"scripts": {
 		"build": "npx tsc",
 		"deploy": "node out/src/deploy.js",
-		"start": "node ."
+		"start": "node .",
+		"clear-db": "rm -r out/src/db/servers/*.db"
 	},
 	"type": "module",
 	"repository": {

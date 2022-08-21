@@ -1,19 +1,29 @@
 import { config as _ } from "dotenv";
 _();
 
-import { Client, Collection, GatewayIntentBits } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, Client, Collection, GatewayIntentBits } from "discord.js";
 import * as fs from "fs";
 import * as path from "path";
 import { Sequelize } from "sequelize";
 
-import Command from "./interfaces/command";
-import { init as CaseInit } from "./db/models/Case.js";
-import { init as WarningInit } from "./db/models/Warning.js";
+import ICommand from "./interfaces/command";
+import { Case, init as CaseInit } from "./db/models/Case.js";
+import Moderator from "./moderator.js";
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
-const serverDatabases = new Collection<string, Sequelize>();
-const commands = new Collection<string, Command>();
+export type ServerDatabasesList = Collection<string, { sequelize: Sequelize, cases: typeof Case }>;
+
+export interface CommandExternalData {
+	interaction: ChatInputCommandInteraction<CacheType>,
+	moderator: Moderator,
+	serverDatabases: ServerDatabasesList,
+	commands: Collection<string, ICommand>;
+}
+
+const serverDatabases: ServerDatabasesList = new Collection<string, { sequelize: Sequelize, cases: typeof Case }>();
+const moderator = new Moderator(serverDatabases);
+const commands = new Collection<string, ICommand>();
 
 client.once("ready", async () => {
 	console.log("ready");
@@ -28,13 +38,17 @@ client.once("ready", async () => {
 			logging: console.log,
 			storage: path.join(serverDatabasesDir, `${guild.id}.db`),
 		});
-
-		serverDatabases.set(guild.id, sequelize);
 		
 		const Cases = CaseInit(sequelize);
-		const Warnings = WarningInit(sequelize, Cases);
+
+		serverDatabases.set(guild.id, {
+			sequelize,
+			cases: Cases,
+		});
 
 		await sequelize.sync();
+
+		console.log(`Guild "${guild.name}" (${guild.id}) database opened`);
 	});
 });
 
@@ -45,7 +59,7 @@ client.on("interactionCreate", async interaction => {
 	if (!command) return;
 
 	try {
-		await command.execute(interaction, commands);
+		await command.execute({ interaction, serverDatabases, moderator, commands });
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: "There was an error executing that command", ephemeral: true });
@@ -57,7 +71,7 @@ client.on("interactionCreate", async interaction => {
 	const commandFiles = fs.readdirSync(commandFilesPath).filter(file => file.endsWith(".js"));
 	
 	for (const file of commandFiles) {
-		const command: Command = (await import("." + path.sep + path.join("commands", file))).default;
+		const command: ICommand = (await import("." + path.sep + path.join("commands", file))).default;
 
 		commands.set(command.name, command);
 	}
@@ -66,7 +80,7 @@ client.on("interactionCreate", async interaction => {
 const exit = async () => {
 	console.log("Closing all database connections...");
 	
-	for (const [guildId, sequelize] of serverDatabases) {
+	for (const [guildId, { sequelize }] of serverDatabases) {
 		await sequelize.close();
 		console.log(`Closed database connection for ${guildId}`);
 	}
